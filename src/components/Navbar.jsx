@@ -30,7 +30,7 @@ const Navbar = () => {
         {
             user &&
             <>
-                <NavLink to="/allbooks"><li className=' text-lg'>All Tickets</li></NavLink>
+                <NavLink to="/all-tickets"><li className=' text-lg'>All Tickets</li></NavLink>
                 <NavLink to="/addbook"><li className=' text-lg'>Dashboard</li></NavLink>
 
                 <NavLink to="/mybooks"><li className=' text-lg'>My Books</li></NavLink>
@@ -100,7 +100,7 @@ const Navbar = () => {
                             </div>
 
                         </div> :
-                            <Link to="/login"><div className="btn bg-blue-600 text-white">Login</div> </Link>
+                            <Link to="/login"><div className="btn bg-blue-600 text-white disabled">Login</div> </Link>
                     }
                 </div>
             </div>
