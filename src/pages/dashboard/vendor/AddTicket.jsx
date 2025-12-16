@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import axios from "axios";
+
 import toast from "react-hot-toast";
 import { AuthContext } from "../../../authProvider/AuthProvider";
 import axiosPublic from "../../../utils/axiosPublic";
@@ -36,8 +36,9 @@ const AddTicket = () => {
         };
 
         await axiosPublic.post("http://localhost:3000/tickets", ticketData);
+        e.target.reset();
+        toast.success("Ticket added successfully");
 
-        alert("Ticket added successfully");
     };
 
     return (

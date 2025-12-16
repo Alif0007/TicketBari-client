@@ -1,24 +1,68 @@
-import { useParams } from "react-router";
-import { useEffect, useState } from "react";
-import axiosPublic from "../utils/axiosPublic";
 
-export default function TicketDetails() {
-    const { id } = useParams();
-    const [ticket, setTicket] = useState(null);
+import { use, useEffect, useState } from "react";
+import axiosPublic from "../utils/axiosPublic";
+import { useParams } from "react-router";
+import { AuthContext } from "../authProvider/AuthProvider";
+import toast from "react-hot-toast";
+
+const TicketDetails = () => {
+    const { user } = use(AuthContext)
+    console.log(user)
+    const [ticket, setTicket] = useState([]);
+    const [qty, setQty] = useState(1);
+
+    const id = useParams().id
+    console.log(id)
 
     useEffect(() => {
-        axiosPublic.get(`/tickets/${id}`).then(res => setTicket(res.data));
+        axiosPublic.get(`/tickets/${id}`)
+            .then(res => {
+
+                const ticketData = res.data;
+                setTicket(ticketData);
+                console.log(ticketData)
+            })
+
+
     }, [id]);
 
-    if (!ticket) return null;
+    const handleBookNow = async () => {
+        const bookingData = {
+            ticketId: ticket._id,
+            ticketTitle: ticket.title,
+            vendorEmail: ticket.vendorEmail,
+            userEmail: user.email,
+            quantity: qty,
+            totalPrice: ticket.price * qty
+        };
+
+        await axiosPublic.post("/bookings", bookingData);
+        toast.success("Booking requested succesfully");
+    };
+
 
     return (
-        <div className="max-w-3xl mx-auto">
-            <img src={ticket.image} className="rounded-lg" />
-            <h1 className="text-3xl font-bold mt-4">{ticket.title}</h1>
-            <p>{ticket.from} → {ticket.to}</p>
-            <p className="mt-2">Price: ${ticket.price}</p>
-            <button className="btn btn-success mt-4">Book Now</button>
+        <div>
+            <h2>{ticket?.title}</h2>
+            <h2>{ticket?.quantity}</h2>
+
+            <input
+                type="number"
+                min="1"
+                max={ticket?.quantity}
+                value={qty}
+                onChange={(e) => setQty(Number(e.target.value))}
+                className="input input-bordered"
+            />
+
+            <button
+                className="btn btn-primary mt-2"
+                onClick={handleBookNow}
+            >
+                Book Now
+            </button>
         </div>
     );
-}
+};
+
+export default TicketDetails;

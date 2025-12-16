@@ -23,7 +23,7 @@ const VendorSidebar = () => {
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink to="/dashboard/vendor/revenue">Revenue Overview</NavLink>
+                    <NavLink to="/dashboard/vendor/revenue-overview">Revenue Overview</NavLink>
                 </li>
             </ul>
         </div>

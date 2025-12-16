@@ -1,6 +1,40 @@
 import { Link } from "react-router";
+import axiosPublic from "../../../utils/axiosPublic";
+import Swal from "sweetalert2";
 
-const TicketCard = ({ ticket }) => {
+const TicketCard = ({ ticket, tickets, setTickets }) => {
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosPublic.delete(`/tickets/${id}`)
+                    .then(data => {
+                        if (data.data.deletedCount) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                            const remainingTickets = tickets.filter(book => book._id !== id)
+                            setTickets(remainingTickets)
+
+                        }
+                    })
+            }
+        });
+    }
+
+
+
+
     return (
         <div className="card bg-base-100 shadow-lg">
             <img src={ticket.image} className="h-40 w-full object-cover" />
@@ -13,7 +47,7 @@ const TicketCard = ({ ticket }) => {
                     <Link to={`/dashboard/vendor/update/${ticket._id}`} className="btn btn-sm btn-info">
                         Update
                     </Link>
-                    <button className="btn btn-sm btn-error">Delete</button>
+                    <button onClick={() => handleDelete(ticket._id)} className="btn btn-sm btn-error">Delete</button>
                 </div>
             </div>
         </div>

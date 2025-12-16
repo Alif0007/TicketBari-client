@@ -1,21 +1,84 @@
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../../authProvider/AuthProvider";
+import Swal from "sweetalert2";
 
 
 const RequestedBookings = () => {
     const { user } = useContext(AuthContext);
     const [bookings, setBookings] = useState([]);
 
+    const [loading, setLoading] = useState(true);
+
+    // Add null check for user
     useEffect(() => {
+        // Only fetch tickets if user exists and has email
+        if (!user || !user.email) {
+
+            return;
+        }
+
+        console.log('Fetching tickets for:', user.email);
+
         axios
-            .get(`http://localhost:5000/bookings?vendorEmail=${user.email}`)
-            .then(res => setBookings(res.data));
-    }, [user.email]);
+            .get(`http://localhost:3000/vendor/bookings?vendorEmail=${user?.email}`)
+            .then(res => {
+                setBookings(res.data)
+                console.log(res)
+            })
+            .catch(error => {
+                console.error('Error fetching tickets:', error);
+                setBookings([]);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [user]);
+
+
+
+    if (loading) {
+        return <div className="text-center py-10">Loading tickets...</div>;
+    }
+
+
+
+
+
 
     const updateStatus = (id, status) => {
-        axios.patch(`http://localhost:5000/bookings/${id}`, { status });
-    };
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.patch(`http://localhost:3000/bookings/${id}`, { status })
+                    .then(data => {
+
+                        if (data.data.modifiedCount) {
+                            Swal.fire({
+                                title: status.toUpperCase(),
+                                text: `Your ticket has been ${status}.`,
+                                icon: "success"
+                            });
+                            // const remainingBooks = bookings.filter(book => book._id !== id)
+                            // setBookings(remainingBooks)
+
+                        }
+                    })
+            }
+        });
+    }
+
+
+
+
+
 
     return (
         <table className="table">

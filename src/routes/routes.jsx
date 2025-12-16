@@ -14,6 +14,7 @@ import MyTickets from "../pages/dashboard/vendor/MyTickets";
 import RequestedBookings from "../pages/dashboard/vendor/RequestedBookings";
 // import RevenueOverview from "../pages/dashboard/vendor/RevenueOverview";
 import VendorDashboardLayout from "../pages/dashboard/vendor/VendorDashboard";
+import RevenueOverview from "../pages/dashboard/vendor/RevenueOverview";
 
 
 
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
             { path: "add-ticket", element: <AddTicket /> },
             { path: "my-tickets", element: <MyTickets /> },
             { path: "requested-bookings", element: <RequestedBookings /> },
+            { path: "revenue-overview", element: <RevenueOverview /> }
 
         ]
     }
