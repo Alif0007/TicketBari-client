@@ -4,6 +4,7 @@ import { AuthContext } from '../authProvider/AuthProvider';
 import { NavLink, useNavigate } from 'react-router';
 import toast, { Toaster } from 'react-hot-toast';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axiosPublic from '../utils/axiosPublic';
 
 
 
@@ -12,6 +13,7 @@ const Register = () => {
     const { createUser, setUser, updateProfileUser, googleSignIn } = use(AuthContext)
     const [error, setError] = useState("")
     const [showPass, setShowPass] = useState(false)
+    // const [userInfo, setUserInfo] = useState()
 
     const navigate = useNavigate()
 
@@ -30,6 +32,7 @@ const Register = () => {
         const password = form.password.value
         const name = form.name.value
         const photoUrl = form.url.value
+
 
         setError("")
 
@@ -64,7 +67,10 @@ const Register = () => {
 
                 });
 
-                // ...
+                const userData = { email, password, name, photoUrl }
+                axiosPublic.post('/users', userData)
+                    .then(res => console.log(res))
+
             })
             .catch((error) => {
                 setError(error.message)

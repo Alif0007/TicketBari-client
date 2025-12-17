@@ -15,6 +15,10 @@ import RequestedBookings from "../pages/dashboard/vendor/RequestedBookings";
 // import RevenueOverview from "../pages/dashboard/vendor/RevenueOverview";
 import VendorDashboardLayout from "../pages/dashboard/vendor/VendorDashboard";
 import RevenueOverview from "../pages/dashboard/vendor/RevenueOverview";
+import AdminDashboard from "../layout/AdminDashboardLayout";
+import ManageTickets from "../pages/dashboard/admin/ManageTickets";
+import ManageUsers from "../pages/dashboard/admin/ManageUsers";
+import AdvertiseTickets from "../pages/dashboard/admin/AdvertiseTickets";
 
 
 
@@ -67,6 +71,20 @@ const router = createBrowserRouter([
             { path: "my-tickets", element: <MyTickets /> },
             { path: "requested-bookings", element: <RequestedBookings /> },
             { path: "revenue-overview", element: <RevenueOverview /> }
+
+        ]
+    },
+
+
+    {
+        path: "/dashboard/admin",
+        element: <AdminDashboard />,
+        children: [
+            { path: "profile", },
+            { path: "manage-tickets", element: <ManageTickets /> },
+            { path: "manage-users", element: <ManageUsers /> },
+            { path: "advertise", element: <AdvertiseTickets /> }
+
 
         ]
     }
