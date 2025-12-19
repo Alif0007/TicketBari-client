@@ -16,9 +16,13 @@ const AdvertiseTickets = () => {
     console.log(tickets)
 
     const advertise = id => {
-        axiosPublic.patch(`/admin/tickets/advertise/${id}`, { isAdvertised: "true" });
+        axiosPublic.patch(`/admin/tickets/advertise/${id}`, { advertised: true });
         toast.success("Added")
+        console.log('click')
+
     };
+
+
 
     return (
         <div className="grid grid-cols-3 gap-4">
@@ -27,8 +31,8 @@ const AdvertiseTickets = () => {
                     <img src={ticket.image} />
                     <div className="card-body">
                         <h2>{ticket.title}</h2>
-                        <button onClick={() => advertise(ticket._id)} className="btn btn-primary">
-                            {ticket.isAdvertised ? "Added" : "Advertise"}
+                        <button onClick={() => advertise(ticket._id)} disabled={ticket.advertised} className="btn btn-primary">
+                            {ticket.advertised ? "Added" : "Advertise"}
                         </button>
                     </div>
                 </div>
