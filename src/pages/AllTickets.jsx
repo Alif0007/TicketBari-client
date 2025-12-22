@@ -1,129 +1,210 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axiosPublic from "../utils/axiosPublic";
 import { Link } from "react-router";
 
 export default function AllTickets() {
     const [tickets, setTickets] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+    // Simple states
+    const [search, setSearch] = useState({ from: "", to: "" });
+    const [transport, setTransport] = useState("");
+    const [sort, setSort] = useState("");
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
+    // Fetch tickets
     useEffect(() => {
-        axiosPublic.get("/tickets")
-            .then(res => {
+        fetchTickets();
+    }, [page, transport, sort]); // Re-fetch when these change
 
-                const ticketData = res.data.data;
-                setTickets(ticketData);
-                console.log(ticketData)
-            })
+    const fetchTickets = async () => {
+        setLoading(true);
+        try {
+            const params = new URLSearchParams();
+            if (search.from) params.append("from", search.from);
+            if (search.to) params.append("to", search.to);
+            if (transport) params.append("type", transport);
+            if (sort) params.append("sort", sort);
+            params.append("page", page);
 
+            const res = await axiosPublic.get(`/tickets?${params}`);
+            setTickets(res.data.data);
+            setTotalPages(res.data.totalPages || 1);
+        } catch (error) {
+            console.error("Error:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    }, []);
+    // Handle search
+    const handleSearch = () => {
+        setPage(1); // Reset to page 1 when searching
+        fetchTickets();
+    };
 
-    // if (loading) {
-    //     return <div className="text-center py-10">Loading tickets...</div>;
-    // }
-
-    // if (error) {
-    //     return <div className="text-center py-10 text-red-500">Error: {error}</div>;
-    // }
+    // Clear all filters
+    const clearFilters = () => {
+        setSearch({ from: "", to: "" });
+        setTransport("");
+        setSort("");
+        setPage(1);
+    };
 
     return (
-        <div className="max-w-7xl mx-auto">
-            <h1 className='text-3xl my-8 font-bold text-center'>All Tickets</h1>
-            {tickets.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {tickets.map(ticket => (
-                        <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/20">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold text-center mb-8">All Tickets</h1>
 
+            {/* Simple Search & Filters */}
+            <div className="bg-white p-4 rounded-lg shadow mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                    {/* From */}
+                    <div>
+                        <label className="block text-sm mb-1">From</label>
+                        <input
+                            type="text"
+                            placeholder="e.g., Dhaka"
+                            className="w-full border p-2 rounded"
+                            value={search.from}
+                            onChange={(e) => setSearch({ ...search, from: e.target.value })}
+                        />
+                    </div>
 
-                            {/* Image Section */}
-                            <div className="relative h-48 overflow-hidden">
-                                <img
-                                    src={ticket.image}
-                                    alt={ticket.title}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                />
-                                <div className="absolute inset-0 bg-linear-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    {/* To */}
+                    <div>
+                        <label className="block text-sm mb-1">To</label>
+                        <input
+                            type="text"
+                            placeholder="e.g., Cox's Bazar"
+                            className="w-full border p-2 rounded"
+                            value={search.to}
+                            onChange={(e) => setSearch({ ...search, to: e.target.value })}
+                        />
+                    </div>
 
-                            </div>
+                    {/* Transport Type */}
+                    <div>
+                        <label className="block text-sm mb-1">Transport Type</label>
+                        <select
+                            className="w-full border p-2 rounded"
+                            value={transport}
+                            onChange={(e) => setTransport(e.target.value)}
+                        >
+                            <option value="">All</option>
+                            <option value="Bus">Bus</option>
+                            <option value="Train">Train</option>
+                            <option value="Launch">Launch</option>
+                            <option value="Plane">Plane</option>
+                        </select>
+                    </div>
 
-                            {/* Card Body */}
-                            <div className="p-5">
-                                {/* Title and Route */}
-                                <div className="mb-4">
-                                    <h3 className="text-xl font-bold text-gray-800 line-clamp-1 mb-2 group-hover:text-primary transition-colors">
-                                        {ticket.title}
-                                    </h3>
-                                    <div className="flex items-center text-sm text-gray-600 mb-1">
-                                        <span className="font-medium bg-blue-50 px-2 py-1 rounded mr-2">{ticket.from}</span>
-                                        <svg className="w-4 h-4 mx-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                        </svg>
-                                        <span className="font-medium bg-blue-50 px-2 py-1 rounded ml-2">{ticket.to}</span>
-                                    </div>
+                    {/* Sort */}
+                    <div>
+                        <label className="block text-sm mb-1">Sort By</label>
+                        <select
+                            className="w-full border p-2 rounded"
+                            value={sort}
+                            onChange={(e) => setSort(e.target.value)}
+                        >
+                            <option value="">Default</option>
+                            <option value="price_asc">Price: Low to High</option>
+                            <option value="price_desc">Price: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-4">
+                    <button
+                        onClick={handleSearch}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                        Search Tickets
+                    </button>
+                    <button
+                        onClick={clearFilters}
+                        className="bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
+                    >
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            {/* Loading */}
+            {loading && (
+                <div className="text-center py-10">
+                    <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <p className="mt-2">Loading tickets...</p>
+                </div>
+            )}
+
+            {/* Tickets Grid */}
+            {!loading && tickets.length === 0 ? (
+                <div className="text-center py-10">
+                    <p className="text-gray-600">No tickets found. Try different search.</p>
+                </div>
+            ) : (
+                <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {tickets.map(ticket => (
+                            <div key={ticket._id} className="bg-white rounded-lg shadow border p-4">
+                                <img src={ticket.image} alt={ticket.title} className="w-full h-48 object-cover rounded mb-4" />
+
+                                <div className="flex justify-between items-start mb-2">
+                                    <h3 className="font-bold text-lg">{ticket.title}</h3>
+                                    <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                                        {ticket.transportType}
+                                    </span>
                                 </div>
 
-                                {/* Price Section */}
-                                <div className="mb-5">
-                                    <div className="flex items-baseline">
-                                        <span className="text-3xl font-bold text-primary">৳{ticket.price}</span>
-                                        <span className="text-sm text-gray-500 ml-2">per person</span>
-                                    </div>
-                                    <div className="text-xs text-gray-500 mt-1">All taxes included</div>
+                                <p className="text-gray-600 mb-2">
+                                    {ticket.from} → {ticket.to}
+                                </p>
+
+                                <p className="text-2xl font-bold text-green-600 mb-4">
+                                    ৳{ticket.price}
+                                </p>
+
+                                <div className="flex justify-between text-sm text-gray-500 mb-4">
+                                    <span>Available: {ticket.quantity}</span>
+                                    <span>Departure: {new Date(ticket.departureTime).toLocaleDateString()}</span>
                                 </div>
 
-                                {/* Availability */}
-                                <div className="flex items-center justify-between mb-5">
-                                    <div className={`px-3 py-1 rounded-full text-sm font-medium `}>
-                                        {ticket.quantity > 0 ? (
-                                            <>
-                                                <span className="inline-block w-2 h-2 rounded-full animate-pulse mr-2"></span>
-                                                {ticket.quantity} seats available
-                                            </>
-                                        ) : 'Sold Out'}
-                                    </div>
-                                    <div className="text-sm text-gray-600">
-                                        <span className="font-medium">{ticket.transportType}</span>
-                                    </div>
-                                </div>
-
-                                {/* Perks */}
-                                {ticket.perks && ticket.perks.length > 0 && (
-                                    <div className="mb-4">
-                                        <p className="text-sm text-gray-500 mb-2">Perks included:</p>
-                                        <div className="flex flex-wrap gap-1">
-                                            {ticket.perks.map((perk, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="badge badge-outline badge-sm"
-                                                >
-                                                    {perk}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* See Details Button */}
-                                <Link
-                                    to={`/ticket/${ticket._id}`}
-                                    className="block w-full"
-                                >
-                                    <button className="cursor-pointer w-full bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 active:scale-95 flex items-center justify-center group/btn">
-                                        <span>See Details</span>
-                                        <svg className="w-5 h-5 ml-2 group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                        </svg>
+                                <Link to={`/ticket/${ticket._id}`}>
+                                    <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+                                        See Details
                                     </button>
                                 </Link>
                             </div>
+                        ))}
+                    </div>
 
-                            {/* Hover Effect Border */}
-                            <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary/10 rounded-2xl pointer-events-none transition-colors duration-300"></div>
+                    {/* Simple Pagination */}
+                    {totalPages > 1 && (
+                        <div className="flex justify-center gap-2 mt-8">
+                            <button
+                                onClick={() => setPage(p => Math.max(1, p - 1))}
+                                disabled={page === 1}
+                                className="px-4 py-2 border rounded disabled:opacity-50"
+                            >
+                                Previous
+                            </button>
+
+                            <span className="px-4 py-2">
+                                Page {page} of {totalPages}
+                            </span>
+
+                            <button
+                                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                                disabled={page === totalPages}
+                                className="px-4 py-2 border rounded disabled:opacity-50"
+                            >
+                                Next
+                            </button>
                         </div>
-                    ))}
-                </div>
-            ) : (
-                <p className="text-center py-10">No tickets available</p>
+                    )}
+                </>
             )}
         </div>
     );
