@@ -24,7 +24,7 @@ const AdvertiseTicketCard = () => {
 
 
     return (
-        <div className='grid grid-cols-4 lg:grid-cols-3 gap-4 max-w-7xl mx-auto'>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto'>
             {
                 advertiseTickets.map(ticket => <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-primary/20">
 
@@ -67,7 +67,7 @@ const AdvertiseTicketCard = () => {
 
                         {/* Availability */}
                         <div className="flex items-center justify-between mb-5">
-                            <div className={`px-3 py-1 rounded-full text-sm font-medium `}>
+                            <div className={` py-1 rounded-full text-sm font-medium `}>
                                 {ticket.quantity > 0 ? (
                                     <>
                                         <span className="inline-block w-2 h-2 rounded-full animate-pulse mr-2"></span>

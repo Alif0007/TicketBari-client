@@ -3,6 +3,7 @@ import TrustedStats from './Stats';
 
 import LatestTicketCard from './LatestTicket';
 import AdvertiseTicketCard from './AdvertiseTicket';
+import Marquee from './Maruee';
 
 
 
@@ -21,6 +22,8 @@ const Home = () => {
                 <h1 className='text-3xl my-8 font-bold text-center'>Sponsored Tickets</h1>
                 <AdvertiseTicketCard></AdvertiseTicketCard>
             </div>
+            <Marquee></Marquee>
+            <Marquee></Marquee>
             <TrustedStats></TrustedStats>
         </div>
     );

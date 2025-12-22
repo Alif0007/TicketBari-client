@@ -31,9 +31,9 @@ const Navbar = () => {
             user &&
             <>
                 <NavLink to="/all-tickets"><li className=' text-lg'>All Tickets</li></NavLink>
-                <NavLink to="/addbook"><li className=' text-lg'>Dashboard</li></NavLink>
+                <NavLink to="/dashboard"><li className=' text-lg'>Dashboard</li></NavLink>
 
-                <NavLink to="/mybooks"><li className=' text-lg'>My Books</li></NavLink>
+
             </>
 
 

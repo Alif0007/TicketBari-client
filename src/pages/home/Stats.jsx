@@ -51,7 +51,7 @@ const TrustedStats = () => {
                             Quick & Easy Booking
                         </h3>
                         <p className="text-gray-600 leading-relaxed">
-                            Skip the queues with Shohoz! Book bus tickets online with access
+                            Skip the queues with Ticketbari! Book bus tickets online with access
                             to 100+ operators nationwide. Easily browse routes.
                         </p>
                     </div>

@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../../authProvider/AuthProvider";
 
 
-const AdminProfile = () => {
+const UserProfile = () => {
     const { user } = useContext(AuthContext);
 
     return (
@@ -16,11 +16,11 @@ const AdminProfile = () => {
                 <div>
                     <h2 className="text-xl font-bold">{user?.displayName}</h2>
                     <p>{user?.email}</p>
-                    <span className="badge badge-primary mt-2">Admin</span>
+                    <span className="badge badge-primary mt-2">User</span>
                 </div>
             </div>
         </div>
     );
 };
 
-export default AdminProfile;
+export default UserProfile;

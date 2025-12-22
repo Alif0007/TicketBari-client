@@ -12,13 +12,20 @@ import VendorProfile from "../pages/dashboard/vendor/VendorProfile";
 import AddTicket from "../pages/dashboard/vendor/AddTicket";
 import MyTickets from "../pages/dashboard/vendor/MyTickets";
 import RequestedBookings from "../pages/dashboard/vendor/RequestedBookings";
-// import RevenueOverview from "../pages/dashboard/vendor/RevenueOverview";
+
 import VendorDashboardLayout from "../pages/dashboard/vendor/VendorDashboard";
 import RevenueOverview from "../pages/dashboard/vendor/RevenueOverview";
 import AdminDashboard from "../layout/AdminDashboardLayout";
 import ManageTickets from "../pages/dashboard/admin/ManageTickets";
 import ManageUsers from "../pages/dashboard/admin/ManageUsers";
 import AdvertiseTickets from "../pages/dashboard/admin/AdvertiseTickets";
+import AdminRoute from "./AdminRoute";
+import VendorRoute from "./VendorRoute";
+import DashboardHome from "../layout/DashboardHome";
+import UserDashboard from "../layout/UserDashboard";
+import AdminProfile from "../pages/dashboard/admin/AdminProfile";
+import UserProfile from "../pages/dashboard/user/UserProfile";
+import MyBookings from "../pages/dashboard/user/MyBookings";
 
 
 
@@ -63,27 +70,49 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: "/dashboard/vendor",
-        element: <VendorDashboardLayout />,
+        path: "/dashboard",
+        element: <PrivateRoute><DashboardHome></DashboardHome></PrivateRoute>
+    },
+    {
+        path: "/dashboard",
+        element: < PrivateRoute >
+            <VendorDashboardLayout />
+        </PrivateRoute >,
         children: [
-            { path: "profile", element: <VendorProfile /> },
-            { path: "add-ticket", element: <AddTicket /> },
-            { path: "my-tickets", element: <MyTickets /> },
-            { path: "requested-bookings", element: <RequestedBookings /> },
-            { path: "revenue-overview", element: <RevenueOverview /> }
+            { path: "vendor-profile", element: <VendorRoute><VendorProfile /></VendorRoute> },
+            { path: "add-ticket", element: <VendorRoute> <AddTicket /></VendorRoute> },
+            { path: "my-tickets", element: <VendorRoute> <MyTickets /></VendorRoute> },
+            { path: "requested-bookings", element: <VendorRoute> <RequestedBookings /> </VendorRoute> },
+            { path: "revenue-overview", element: <VendorRoute> <RevenueOverview /></VendorRoute> }
 
         ]
     },
 
 
     {
-        path: "/dashboard/admin",
-        element: <AdminDashboard />,
+        path: "/dashboard",
+        element: < PrivateRoute >
+            <AdminDashboard />
+        </PrivateRoute >,
         children: [
-            { path: "profile", },
-            { path: "manage-tickets", element: <ManageTickets /> },
-            { path: "manage-users", element: <ManageUsers /> },
-            { path: "advertise", element: <AdvertiseTickets /> }
+            { path: "admin-profile", element: <AdminRoute><AdminProfile /></AdminRoute> },
+            { path: "manage-tickets", element: <AdminRoute><ManageTickets /></AdminRoute> },
+            { path: "manage-users", element: <AdminRoute><ManageUsers /></AdminRoute> },
+            { path: "advertise", element: <AdminRoute><AdvertiseTickets /></AdminRoute> }
+
+
+        ]
+    },
+    {
+        path: "/dashboard",
+        element: < PrivateRoute >
+            <UserDashboard />
+        </PrivateRoute >,
+        children: [
+            { path: "user-profile", element: <UserProfile /> },
+            { path: "my-bookings", element: <MyBookings></MyBookings> },
+            { path: "transactions", element: <AdminRoute><ManageUsers /></AdminRoute> },
+            { path: "advertise", element: <AdminRoute><AdvertiseTickets /></AdminRoute> }
 
 
         ]

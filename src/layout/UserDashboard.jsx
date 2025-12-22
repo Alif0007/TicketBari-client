@@ -5,7 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { LuTicketPlus, LuTickets } from "react-icons/lu";
 import { MdManageAccounts } from "react-icons/md";
 
-const AdminDashboard = () => {
+const UserDashboard = () => {
     return (
         <div>
             <Navbar></Navbar>
@@ -31,34 +31,28 @@ const AdminDashboard = () => {
                         {/* Sidebar content here */}
                         <ul className="menu w-full grow">
                             {/* List item */}
-                            <li><NavLink to="admin-profile"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="Admin Profile">
+                            <li><NavLink to="user-profile"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="User Profile">
 
                                 <span className="text-xl"><CgProfile /></span>
-                                <span className="is-drawer-close:hidden">Admin Profile</span>
+                                <span className="is-drawer-close:hidden">User Profile</span>
                             </button></NavLink>
                             </li>
 
-                            <li><NavLink to="manage-tickets"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="Manage Tickets">
+                            <li><NavLink to="my-bookings"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="My Bookings">
 
                                 <span className="text-xl"><LuTickets />
                                 </span>
-                                <span className="is-drawer-close:hidden">Manage Tickets</span>
+                                <span className="is-drawer-close:hidden">"My Bookings</span>
                             </button></NavLink>
                             </li>
-                            <li><NavLink to="manage-users"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="Manage Users">
+                            <li><NavLink to="transactions"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="Transaction History">
 
                                 <span className="text-xl"><MdManageAccounts />
                                 </span>
-                                <span className="is-drawer-close:hidden">Manage Users</span>
+                                <span className="is-drawer-close:hidden">Transaction History</span>
                             </button></NavLink>
                             </li>
-                            <li><NavLink to="advertise"><button className="is-drawer-close:tooltip is-drawer-close:tooltip-right flex justify-center items-center gap-2" data-tip="Advertise Tickets">
 
-                                <span className="text-xl"><LuTicketPlus />
-                                </span>
-                                <span className="is-drawer-close:hidden">Advertise Tickets</span>
-                            </button></NavLink>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -68,4 +62,4 @@ const AdminDashboard = () => {
     );
 };
 
-export default AdminDashboard;
+export default UserDashboard;
