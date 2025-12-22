@@ -26,6 +26,7 @@ import UserDashboard from "../layout/UserDashboard";
 import AdminProfile from "../pages/dashboard/admin/AdminProfile";
 import UserProfile from "../pages/dashboard/user/UserProfile";
 import MyBookings from "../pages/dashboard/user/MyBookings";
+import ErrorPage from "../pages/ErrorPage";
 
 
 
@@ -116,6 +117,10 @@ const router = createBrowserRouter([
 
 
         ]
+    },
+    {
+        path: "/*",
+        element: <ErrorPage></ErrorPage>
     }
 ]);
 
