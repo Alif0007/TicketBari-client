@@ -19,7 +19,7 @@ const MyTickets = () => {
         console.log('Fetching tickets for:', user.email);
 
         axios
-            .get(`http://localhost:3000/vendor-tickets?vendorEmail=${user.email}`)
+            .get(`https://ticketbari-server-fawn.vercel.app/vendor-tickets?vendorEmail=${user.email}`)
             .then(res => {
                 setTickets(res.data.data || []);
                 setLoading(false);

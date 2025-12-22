@@ -67,7 +67,7 @@ const AddTicket = () => {
         };
 
         try {
-            await axiosPublic.post("http://localhost:3000/tickets", ticketData);
+            await axiosPublic.post("https://ticketbari-server-fawn.vercel.app/tickets", ticketData);
             e.target.reset();
 
             // Reset perks array after submission

@@ -20,7 +20,7 @@ const MyBookings = () => {
         console.log('Fetching tickets for:', user.email);
 
         axios
-            .get(`http://localhost:3000/bookings?userEmail=${user.email}`)
+            .get(`https://ticketbari-server-fawn.vercel.app/bookings?userEmail=${user.email}`)
             .then(res => {
                 setTickets(res.data.data || []);
                 setLoading(false);

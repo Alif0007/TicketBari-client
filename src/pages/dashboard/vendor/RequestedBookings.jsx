@@ -21,7 +21,7 @@ const RequestedBookings = () => {
         console.log('Fetching tickets for:', user.email);
 
         axios
-            .get(`http://localhost:3000/vendor/bookings?vendorEmail=${user?.email}`)
+            .get(`https://ticketbari-server-fawn.vercel.app/vendor/bookings?vendorEmail=${user?.email}`)
             .then(res => {
                 setBookings(res.data)
                 console.log(res)
@@ -57,7 +57,7 @@ const RequestedBookings = () => {
             confirmButtonText: "Yes"
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.patch(`http://localhost:3000/bookings/${id}`, { status })
+                axios.patch(`https://ticketbari-server-fawn.vercel.app/bookings/${id}`, { status })
                     .then(data => {
 
                         if (data.data.modifiedCount) {
