@@ -23,7 +23,8 @@ const Home = () => {
                 <AdvertiseTicketCard></AdvertiseTicketCard>
             </div>
             <Marquee></Marquee>
-            <Marquee></Marquee>
+            <div className='pl-2'><Marquee ></Marquee></div>
+
             <TrustedStats></TrustedStats>
         </div>
     );
