@@ -1,3 +1,5 @@
+
+<img width="1920" height="864" alt="Screenshot (4)" src="https://github.com/user-attachments/assets/1efd0399-e3bd-4396-a3c5-f488b25fe786" />
 A full-featured MERN stack platform for booking travel tickets (Bus, Train, Launch, Plane) with three distinct user roles: User, Vendor, and Admin.
 
 🌟 Live Demo
